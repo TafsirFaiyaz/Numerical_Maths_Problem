@@ -1,0 +1,145 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# numpy is used for efficient array (vector or matrix) operations
+# pyplot is used for plotting
+# Must read: [https://www.tutorialspoint.com/numpy/numpy_matplotlib.htm]
+coeff = [1, 0, 2, 0, 5] # coeffecients of the polynomial
+n = len(coeff) - 1 # degree. Remember: number of coeff = degree + 1
+
+'''
+For a single value of x, finding p(x)
+
+Note that this is an example of block comment in python. A block comment
+starts with three ' and ends with three '.
+'''
+
+x = 6.0
+p_x = 0.0
+
+for i in range(len(coeff)):
+    p_x+=(coeff[i]*(x**i))
+
+print(p_x)
+
+
+
+x_arr = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+p_x_arr = []
+
+for i in range(len(x_arr)):
+    p_x=0
+    for j in range(len(coeff)):
+
+        p_x+=(coeff[j]*(x_arr[i]**j))
+
+    p_x_arr.append(p_x)
+
+print(*p_x_arr)
+
+
+'''
+Lab task 1
+Here we implement a Polynomial class with three methods: the constructor
+__init__(), the toString method __repr__(), and a method to make the objects
+of the class callable, __call__() method
+'''
+
+# Polynomial Class
+
+class Polynomial:
+  # Constructor, note that it starts and ends with two underscores
+  def __init__(self, coeff):
+    '''
+    Every internal variable of the object must be saved and initialized
+    in this method: self.variable = value
+    '''
+    self.coeff = coeff
+    self.degree = len(coeff) - 1
+
+  # Constructor to make the object callable
+  def __call__(self, x_arr):
+    '''
+    Here we assumed x_arr is a numpy array. Remember that a numpy array acts
+    like a vector (1D matrix). So an operation x + 1 would add 1 to each element
+    of the matrix (unlike python's defaule list). Simlarly, x ** 2 would return
+    element wise square of the array.
+
+    Hence, this method would return an array, where the i'th element is the
+    (polynomial) interpolated value of x[i], given the coeffecients a[i].
+    '''
+    p_x_arr = []
+    # --------------------------------------------
+    # HINT: Should look like
+    # for i in range(self.degree + 1):
+    #     ????
+    # --------------------------------------------
+
+    # remember 1: length = degree + 1 for a polynomial
+    # remember 2: range(0, a) is same as range(a)
+    # remember 3: range(a, b) means a is inclusive, b is exclusive
+
+    # --------------------------------------------
+    # YOUR CODE HERE
+    for i in range(len(x_arr)):
+        p_x=0
+        for j in range(len(self.coeff)):
+
+            p_x+=(self.coeff[j]*(x_arr[i]**j))
+
+        p_x_arr.append(p_x)
+    return p_x_arr
+    # --------------------------------------------
+
+  # String representation method of the object (similar to toString() of java)
+  def __repr__(self):
+    # remember: a formatted string must start with f.
+
+    str_ret = f'Polynomial of degree {self.degree}\np(x) = '
+    for i in range(self.degree + 1):
+        a_val = self.coeff[i]
+        if i != 0:
+            if a_val >= 0:
+                str_ret += f'+ {a_val}x^{i} '
+            else:
+                str_ret += f'- {-a_val}x^{i} '
+        else:
+            str_ret += f'{a_val}x^{i} '
+
+    return str_ret
+
+  # custom method 1: to get the degree of the polynomial
+  def get_degree(self):
+    # --------------------------------------------
+    # YOUR CODE HERE
+    return self.coeff-1
+    # --------------------------------------------
+
+  # custom method 2: to get the coefficients of the polynomial
+  def get_coeffs(self):
+    # --------------------------------------------
+    # YOUR CODE HERE
+    return self.coeff
+    # --------------------------------------------
+
+
+# test cases for your answer
+x_arr = np.array([1, 2, 3, 4, 5])
+
+coeff = np.array([1.0, 0.0, 2.0, 0.0, 5.0])
+p = Polynomial(coeff)
+
+results = [8, 89, 424, 1313, 3176]
+test = p(x_arr)
+print(test)
+np.testing.assert_array_equal(results, test)
+
+# an example to see if our implementation works
+coeff = np.array([1.0, 0.0, 2.0, 0.0, 5.0])
+p = Polynomial(coeff)
+print(p)  # check if printable
+x_arr = np.array([1, 2, 3, 4, 5])
+print()
+print(f"p({x_arr}) =", p(x_arr)) # check if the object is callable
+# should print p([1 2 3 4 5]) =  [   8.   89.  424. 1313. 3176.]
