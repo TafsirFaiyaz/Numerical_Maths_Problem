@@ -1,0 +1,14 @@
+data_x = np.array([-0.5,0,0.5])
+data_y = np.array([1.87,2.20,2.44])
+p = get_poly(data_x, data_y)
+
+print(p)
+
+result= p([6])
+
+print(result)
+
+
+
+
+
