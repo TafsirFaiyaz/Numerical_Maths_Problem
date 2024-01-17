@@ -98,22 +98,3 @@ plt.title('Lagrange Polynomial')
 
 plt.show()
 
-
-
-
-#Homework
-
-#your code here
-data_x = np.array ([2,4,6])
-
-data_y = np.array([8,16,24])
-p = Lagrange_Polynomial(data_x,data_y)
-print (p)
-print ("-"*40)
-
-x = np.array([-1.5])
-result = p(x)
-print (f"p(x={x}) =", result)
-f_x = 4*x
-print (f"f(x={x}) =", f_x)
-print ("Interpolation error =", abs (f_x - result))
