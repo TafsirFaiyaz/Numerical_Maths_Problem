@@ -1,0 +1,99 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Lagrange_Polynomial:
+    def __init__(self, data_x, data_y):
+        '''
+        First we need to check whether the input vectors (numpy arrays) are equal
+        or not.
+        assert (condition), "msg"
+        this command checks if the condition is true or false. If true, the code
+        runs normally. But if false, then the code returns an error message "msg"
+        and stops execution
+        '''
+        assert len(data_x) == len(data_y), "length of data_x and data_y must be equal"
+
+        '''
+        Lagrange polynomials do not use coefficeints a_i, rather the nodes
+        (x_i, y_i). Hence, we just need to store these inside the object
+        '''
+
+        self.data_x = data_x
+        self.data_y = data_y
+
+        self.degree = len(data_x) - 1
+        # we assume that the inputs are numpy array, so we can perform
+        # element wise operations
+
+    def __repr__(self):
+        # method for string representation
+        # you don't need to worry about the following code if you don't understand
+        strL = f"LagrangePolynomial of order {self.degree}\n"
+        strL += "p(x) = "
+        for i in range(len(self.data_y)):
+            if self.data_y[i] == 0:
+                continue
+            elif self.data_y[i] >= 0:
+                strL += f"+ {self.data_y[i]}*l_{i}(x) "
+            else:
+                strL += f"- {-self.data_y[i]}*l_{i}(x) "
+
+        return strL
+
+    def l(self, k, x):
+
+
+        l_k = 1.0 # Initialization
+
+        # --------------------------------------------
+        # YOUR CODE HERE
+        for i in range(self.degree+1):
+            if i==k:
+                continue
+            else:
+                x_j=self.data_x[i]
+                x_k=self.data_x[k]
+                l_k*=(x-x_j)/(x_k-x_j)
+        return l_k
+
+
+    def __call__(self, x_arr):
+
+        # initialize with zero
+        p_x_arr  = np.zeros(len(x_arr))
+
+        # --------------------------------------------
+        # YOUR CODE HERE
+
+        for i in range(len(x_arr)):
+            x = x_arr[i]
+            p_x = 0
+            for k in range(len(self.data_x)):
+                p_x += self.data_y[k] * self.l(k, x)
+            p_x_arr[i] = p_x
+
+        return p_x_arr
+
+
+import numpy as np
+
+data_x = np.array([-3.5, -2.231, -1.152, -0.5, 0.198, 0.785, 1.6])
+data_y = np.array([4.0, 1.193, 6.156, 2.0, 1.803, 2.558, 0.0])
+
+p = Lagrange_Polynomial(data_x, data_y)
+print(p)
+
+#generating 50 points from -2.55 to 1.189 in order to create a smooth line
+x_arr = np.linspace(-3.5, 1.6, 40)
+p_x_arr = p(x_arr)
+
+# plot to see if your implementation is correct
+#google the functions to understand what each parameters mean, if not apparent
+plt.plot(x_arr, p_x_arr)
+plt.plot(data_x, data_y, 'ro')
+plt.legend(['interpolated', 'node points'], loc = 'lower right')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Lagrange Polynomial')
+
+plt.show()
