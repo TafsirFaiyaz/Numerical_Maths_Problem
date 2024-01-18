@@ -1,0 +1,12 @@
+x       = np.array([0.1,0.2])
+y       = np.array([-0.620,-0.283])
+y_prime = np.array([3.585,3.140])
+n      =  2
+X      = np.array([0.15,0.30,0.50])
+f3     = hermit(x[:(n+1)], y[:(n+1)], y_prime[:(n+1)])
+print(f3)
+print(f3(X))
+
+print(f3(0.15))
+print(f3(0.30))
+print(f3(0.50))
