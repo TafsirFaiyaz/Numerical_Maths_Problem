@@ -1,0 +1,169 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from itertools import combinations
+from numpy.polynomial import Polynomial
+
+# Already written for you.
+
+def l(k, x):
+    n = len(x)
+    assert (k < len(x))
+
+    x_k = x[k]
+    x_copy = np.delete(x, k)
+
+    denominator = np.prod(x_copy - x_k)
+
+    coeff = []
+
+    for i in range(n):
+        coeff.append(sum([np.prod(x) for x in combinations(x_copy, i)]) * (-1)**(i) / denominator)
+
+    coeff.reverse()
+
+    return Polynomial(coeff)
+
+def h(k, x):
+    # initialize with None. Replace with appropriate values/function calls
+    l_k = None
+    l_k_sqr = None
+    l_k_prime = None
+    coeff = None
+    p = None
+
+
+    # --------------------------------------------
+    # YOUR CODE HERE
+
+    l_k = l(k,x)
+    l_k_sqr = l(k,x) ** 2
+    l_k_prime = l_k.deriv(1)
+    coeff = [1+2*x[k]*l_k_prime(x[k]), -2*l_k_prime(x[k])]
+    p = Polynomial(coeff)
+
+    # --------------------------------------------
+
+    return p * l_k_sqr
+
+
+# Test case for the h(k, x) function
+x = [3, 5, 7, 9]
+k = 2
+h_test = h(k, [3, 5, 7, 9])
+h_result = Polynomial([-2.5, 0.5]) * (l(k, x) ** 2)
+
+assert Polynomial.has_samecoef(h_result, h_test)
+assert h_result == h_test
+
+
+def h_hat(k, x):
+    # Initialize with none
+    l_k = None
+    l_k_sqr = None
+    coeff = None
+    p = None
+
+    # --------------------------------------------
+    # YOUR CODE HERE
+    l_k = l(k,x)
+    l_k_sqr = l_k*l_k
+    coeff = [-x[k],1]
+    p = Polynomial(coeff)
+    # --------------------------------------------
+
+    return p * l_k_sqr
+
+
+x = [3, 5, 7, 9]
+k = 2
+h_test = h_hat(k, [3, 5, 7, 9])
+h_result = Polynomial([-7, 1]) * (l(k, x) ** 2)
+
+assert Polynomial.has_samecoef(h_result, h_test)
+assert h_result == h_test
+
+
+def hermit(x, y, y_prime):
+    assert len(x) == len(y)
+    assert len(y) == len(y_prime)
+
+    f = None
+    # --------------------------------------------
+    # YOUR CODE HERE
+
+    f = 0
+
+    for i in range(len(x)):
+        f +=((y[i]*h(i,x)) + (y_prime[i] * h_hat(i,x)))
+
+    # --------------------------------------------
+    return f
+
+pi      = np.pi
+x       = np.array([0.0, pi/8.0,  pi, 4.0*pi/2.0])
+y       = np.array([0.0,    1.0, 0.0,       -1.0])
+y_prime = np.array([1.0,    0.0, 1.0,        0.0])
+
+
+n      = 1
+f3     = hermit(x[:(n+1)], y[:(n+1)], y_prime[:(n+1)])
+data   = f3.linspace(n=50, domain=[-3, 3])
+test_x = np.linspace(-10, 10, 50, endpoint=True)
+test_y = np.sin(test_x)
+
+plt.plot(data[0], data[1])
+plt.plot(test_x, test_y)
+plt.show()
+
+
+n      = 2
+f5     = hermit(x[:(n+1)], y[:(n+1)], y_prime[:(n+1)])
+data   = f5.linspace(n=100, domain=[-0.85, 2.5])
+test_x = np.linspace(-5*pi, 5*pi, 100, endpoint=True)
+test_y = np.sin(test_x)
+
+plt.plot(test_x, test_y) # 25-
+plt.plot(data[0], data[1]) # 10-33
+plt.show()
+
+
+n      = 3
+f7     = hermit(x[:(n+1)], y[:(n+1)], y_prime[:(n+1)])
+data   = f7.linspace(n=50, domain=[-0.45, 3.3])
+test_x = np.linspace(-6*pi, 6*pi, 50, endpoint=True)
+test_y = np.sin(test_x)
+
+plt.plot(data[0], data[1])
+plt.plot(test_x, test_y)
+plt.show()
+
+
+#defining new set of given node information: x, y and y'
+x       = np.array([0.0, 1.0,          2.0       ])
+y       = np.array([1.0, 2.71828183,  54.59815003])
+y_prime = np.array([0.0, 5.43656366, 218.39260013])
+
+
+f7      = hermit( x, y, y_prime)
+data    = f7.linspace(n=50, domain=[-0.7, 2.45])
+test_x  = np.linspace(-0.5, 2.2, 50, endpoint=True)
+test_y  = np.exp(test_x**2)
+
+plt.plot(data[0], data[1])
+plt.plot(test_x, test_y)
+plt.show()
+
+
+#defining new set of given node information: x, y and y'
+x       = np.array([1.0, 3.0, 5.0])
+y       = np.array([5.0, 1.0, 5.0])
+y_prime = np.array([-4.0, 0.0, 4.0])
+
+f7      = hermit( x, y, y_prime)
+data    = f7.linspace(n=50, domain=[-11, 10.5])
+test_x  = np.linspace(-10, 10, 50, endpoint=True)
+test_y  = (test_x-3)**2 + 1
+
+plt.plot(data[0], data[1])
+plt.plot(test_x, test_y)
+plt.show()
