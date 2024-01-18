@@ -1,0 +1,5 @@
+data_x = np.array([-0.5,0,0.5])
+data_y = np.array([1.87,2.20,2.44])
+differences = calc_div_diff(list(data_x), list(data_y))
+p = Newtons_Divided_Differences(list(differences))
+print(p([6]))
