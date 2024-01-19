@@ -1,0 +1,114 @@
+def dh(f, h, x):
+    '''
+    Input:
+        f: np.polynomial.Polynonimial type data.
+        h: floating point data.
+        x: np.array type data.
+    Output:
+        return np.array type data of slope at each point x.
+    '''
+    # --------------------------------------------
+    # YOUR CODE HERE
+    return (f(x+h) - f(x-h)) / 2*h
+
+    # --------------------------------------------
+
+
+
+def dh1(f, h, x):
+    '''
+    Input:
+        f: np.polynomial.Polynonimial type data.
+        h: floating point data.
+        x: np.array type data.
+    Output:
+        return np.array type data of slope at each point x.
+    '''
+    # --------------------------------------------
+    # YOUR CODE HERE
+    return ((4*dh(f, h/2, x)) - dh(f, h, x)) / 3
+    # --------------------------------------------
+
+
+
+def error_2(f, hs, x_i):  #Using the functions we wrote dh() my c_diff  and dh1() which is my first order c diff, we find the error through appending their diffrences with Y_actual ny f(x)
+    '''
+    Input:
+        f  : np.polynomial.Polynonimial type data.
+        hs : np.array type data. list of h.
+        x_i: floating point data. single value of x.
+    Output:
+        return two np.array type data of errors by two methods..
+    '''
+    f_prime = f.deriv(1)   #first order derivitive f^1(x)
+    Y_actual = f_prime(x_i)
+
+    diff_error = []
+    diff2_error = []
+
+    for h in hs: #where h is my loop counter iterating through hs
+        # for each values of hs calculate the error using both methods
+        # and append those values into diff_error and diff2_error list.
+
+        # --------------------------------------------
+        # YOUR CODE HERE
+
+        x= Y_actual-dh(f, h, x_i)
+        y= Y_actual-dh1(f, h, x_i)
+        diff_error.append(x)
+        diff2_error.append(y)
+
+        # --------------------------------------------
+
+    print(pd.DataFrame({"h": hs, "Diff": diff_error, "Diff2": diff2_error}))
+
+    return diff_error, diff2_error
+
+
+
+def draw_graph(f, ax, domain=[-10, 10], label=None):
+    data = f.linspace(domain=domain)
+    ax.plot(data[0], data[1], label=label)
+
+fig, ax = plt.subplots()
+ax.axhline(y=0, color='k')
+
+p = Polynomial([3.0, 4.0, -14.0, -10.0, 3.0, 1.5])
+p_prime = p.deriv(1)
+draw_graph(p, ax, [-2.5, 2.0], 'Function')
+draw_graph(p_prime, ax, [-2.5, 2.0], 'Derivative')
+
+ax.legend()
+
+
+
+
+fig, ax = plt.subplots()
+ax.axhline(y=0, color='k')
+
+draw_graph(p_prime, ax, [-2.5, 2.0], 'actual')
+
+h = 1.5
+x = np.linspace(-2.5, 2.0, 50, endpoint=True)
+y = dh1(p, h, x)
+ax.plot(x, y, label='Richardson; h=1.5')
+
+h = 0.1
+x = np.linspace(-2.5, 2.0, 50, endpoint=True)
+y = dh1(p, h, x)
+ax.plot(x, y, label='Richardson; h=0.1')
+
+ax.legend()
+
+
+
+
+
+fig, ax = plt.subplots()
+ax.axhline(y=0, color='k')
+hs = np.array([3.5, 0.55, 0.3, .17, 0.1, 0.055, 0.03, 0.017, 0.01])
+e1, e2 = error_2(p, hs, 2.0)
+ax.plot(hs, e1, label='dh')
+ax.plot(hs, e2, label='dh1')
+
+ax.legend()
