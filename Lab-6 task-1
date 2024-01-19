@@ -1,0 +1,106 @@
+import pandas as pd
+
+x = [0, 1, 2, 3, 4, 5, 6, 7]
+y = [1.0, 5.2, 3.9, 8.4, 14.6, 12.3, 8.9, 10.2]
+
+dictionary = {
+    "x": x,
+    "y": y,
+}
+df = pd.DataFrame(dictionary)
+df.head(8)
+
+
+
+import numpy as np
+
+x = np.linspace(0, np.pi/2, 15)
+y = np.sin(x)
+
+dictionary = {
+    "x": x,
+    "sin(x)": y,
+}
+df = pd.DataFrame(dictionary)
+df.head(15)
+
+
+
+from numpy.polynomial import Polynomial
+import matplotlib.pyplot as plt
+
+f = Polynomial([2.0, 0.5, -6.0, -2.0, 2.5, 1.0])
+x = np.linspace(-2.5, 1.5, 100)
+y = f(x)
+dictionary = {
+    'x': x,
+    'y': y
+}
+plt.axhline(y=0, color='r')
+plt.plot(x, y,'y')
+plt.plot(f.roots(), [0.0]*5, 'go')
+print(f.roots())
+
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from numpy.polynomial import Polynomial
+
+# The polynomial and the range is defined for you
+f = Polynomial([2.0, 0.5, -6.0, -2.0, 2.5, 1.0])
+a = -0.5
+b = 1.3
+m = (a + b) / 2
+e = 1e-6
+
+root = 0.0    # You need to update this value
+
+# Populate the following lists in each iteration
+list_a = []
+list_b = []
+list_m = []
+list_f = []
+
+# YOUR CODE HERE
+
+found= False
+while not found:
+
+    list_a.append(a)
+    list_b.append(b)
+    list_m.append(m)
+    list_f.append(f(m))
+
+    if f(a)*f(m)<0:
+        a=a
+        b=m
+        m=(a+b)/2
+
+    elif f(a)*f(m)>0:
+        a=m
+        b=b
+        m=(a+b)/2
+
+    elif f(m) == 0:
+        root=m
+        found=True
+
+    if abs(m-list_m[-1]) / abs(m)<=e:
+        root=m
+        found=True
+
+
+xs = np.linspace(-2.5, 1.5, 100)
+ys = f(xs)
+
+
+
+plt.axhline(y=0, color='r')
+plt.plot(xs, ys,'y')
+plt.plot(root, f(root), 'go')
+
+print(pd.DataFrame({'a':list_a, 'b':list_b, 'm':list_m, 'f(m)':list_f}))
+
+assert "{:.3f}".format(root) == "0.618"
