@@ -1,0 +1,22 @@
+hs = np.array([3.5, 0.55, 0.3, .17, 0.1, 0.055, 0.03, 0.017, 0.01])
+x=2
+p = Polynomial([3.0, 4.0, -14.0, -10.0, 3.0, 1.5])
+p_prime = p.deriv(1)
+
+fig, ax = plt.subplots()
+ax.axhline(y=0, color='k')
+
+e1, e2 = error_2(p, hs, 2)
+
+ax.plot(hs, e1, label='dh')
+ax.plot(hs, e2, label='dh1')
+
+
+
+err = error_1(p, p_prime, hs, 2)
+
+ax.plot(hs, err[0], label='Forward')
+ax.plot(hs, err[1], label='Backward')
+ax.plot(hs, err[2], label='Central')
+
+ax.legend()
