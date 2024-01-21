@@ -1,0 +1,52 @@
+def get_result_gaussian_elimination(n, A):
+  # n is the number of unknowns
+  # A is the Augmented n x n+1 matrix. (numpy array)
+
+
+  # Making numpy array of n size and initializing
+  # to zero for storing solution vector
+    x = np.zeros(n)
+
+
+  # YOUR CODE HERE
+    a = A
+
+    for i in range(n):
+        if a[i][i] == 0.0:
+            sys.exit('Divide by zero detected!')
+
+        for j in range(i+1, n):
+            ratio = a[j][i]/a[i][i]
+
+            for k in range(n+1):
+                a[j][k] = a[j][k] - ratio * a[i][k]
+
+
+    x[n-1] = a[n-1][n]/a[n-1][n-1]
+
+    for i in range(n-2,-1,-1):
+        x[i] = a[i][n]
+
+        for j in range(i+1,n):
+            x[i] = x[i] - a[i][j]*x[j]
+
+        x[i] = x[i]/a[i][i]
+
+
+  # HINT:
+  # 1. Apply Gauss Elimination
+  # 2. Apply Back Substitution
+
+    return x
+
+
+
+# Test case for the get_result_gaussian_elimination(n, A) function.
+
+data_n = 3
+data_A = np.array([[1, 2, 1, 0], [1, -2, 2, 4], [2, 12, -2, 4]])
+
+test = get_result_gaussian_elimination(data_n, data_A)
+results = [11, -2.5, -6]
+
+np.testing.assert_array_equal(test, results)
