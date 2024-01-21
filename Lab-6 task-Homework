@@ -1,0 +1,58 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from numpy.polynomial import Polynomial
+
+# The polynomial and the range is defined for you
+f = Polynomial([-25, -25, 1, 1])
+a = -4
+b = 3
+m = (a + b) / 2
+e = 1e-2
+
+root = 0.0    # You need to update this value
+
+# Populate the following lists in each iteration
+list_a = []
+list_b = []
+list_m = []
+list_f = []
+
+# YOUR CODE HERE
+
+found= False
+while not found:
+
+    list_a.append(a)
+    list_b.append(b)
+    list_m.append(m)
+    list_f.append(f(m))
+
+    if f(a)*f(m)<0:
+        a=a
+        b=m
+        m=(a+b)/2
+
+    elif f(a)*f(m)>0:
+        a=m
+        b=b
+        m=(a+b)/2
+
+    elif f(m) == 0:
+        root=m
+        found=True
+
+    if abs(m-list_m[-1]) / abs(m)<=e:
+        root=m
+        found=True
+
+
+xs = np.linspace(-2.5, 1.5, 100)
+ys = f(xs)
+
+plt.axhline(y=0, color='r')
+plt.plot(xs, ys,'y')
+plt.plot(root, f(root), 'go')
+
+print(pd.DataFrame({'a':list_a, 'b':list_b, 'm':list_m, 'f(m)':list_f}))
+
