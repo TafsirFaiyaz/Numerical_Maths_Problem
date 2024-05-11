@@ -47,6 +47,7 @@ of the class callable, __call__() method
 
 class Polynomial:
   # Constructor, note that it starts and ends with two underscores
+  
   def __init__(self, coeff):
     '''
     Every internal variable of the object must be saved and initialized
