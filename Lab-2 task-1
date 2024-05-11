@@ -36,7 +36,6 @@ for i in range(len(x_arr)):
 
 print(*p_x_arr)
 
-
 '''
 Lab task 1
 Here we implement a Polynomial class with three methods: the constructor
