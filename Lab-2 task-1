@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 # numpy is used for efficient array (vector or matrix) operations
 # pyplot is used for plotting
 # Must read: [https://www.tutorialspoint.com/numpy/numpy_matplotlib.htm]
