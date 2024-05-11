@@ -13,6 +13,7 @@ For a single value of x, finding p(x)
 
 Note that this is an example of block comment in python. A block comment
 starts with three ' and ends with three '.
+
 '''
 x = 6.0
 p_x = 0.0
