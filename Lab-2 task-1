@@ -4,6 +4,7 @@ import numpy as np
 # numpy is used for efficient array (vector or matrix) operations
 # pyplot is used for plotting
 # Must read: [https://www.tutorialspoint.com/numpy/numpy_matplotlib.htm]
+
 coeff = [1, 0, 2, 0, 5] # coeffecients of the polynomial
 n = len(coeff) - 1 # degree. Remember: number of coeff = degree + 1
 
