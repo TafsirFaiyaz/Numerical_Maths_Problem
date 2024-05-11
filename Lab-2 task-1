@@ -14,7 +14,6 @@ For a single value of x, finding p(x)
 Note that this is an example of block comment in python. A block comment
 starts with three ' and ends with three '.
 '''
-
 x = 6.0
 p_x = 0.0
 
@@ -22,8 +21,6 @@ for i in range(len(coeff)):
     p_x+=(coeff[i]*(x**i))
 
 print(p_x)
-
-
 
 x_arr = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
 p_x_arr = []
