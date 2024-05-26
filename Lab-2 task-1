@@ -47,6 +47,7 @@ of the class callable, __call__() method
 # Polynomial Class
 
 class Polynomial:
+
   # Constructor, note that it starts and ends with two underscores
   
   def __init__(self, coeff):
@@ -58,6 +59,7 @@ class Polynomial:
     self.degree = len(coeff) - 1
 
   # Constructor to make the object callable
+
   def __call__(self, x_arr):
     '''
     Here we assumed x_arr is a numpy array. Remember that a numpy array acts
@@ -69,6 +71,7 @@ class Polynomial:
     (polynomial) interpolated value of x[i], given the coeffecients a[i].
     '''
     p_x_arr = []
+
     # --------------------------------------------
     # HINT: Should look like
     # for i in range(self.degree + 1):
@@ -81,6 +84,7 @@ class Polynomial:
 
     # --------------------------------------------
     # YOUR CODE HERE
+
     for i in range(len(x_arr)):
         p_x=0
         for j in range(len(self.coeff)):
@@ -89,6 +93,7 @@ class Polynomial:
 
         p_x_arr.append(p_x)
     return p_x_arr
+
     # --------------------------------------------
 
   # String representation method of the object (similar to toString() of java)
